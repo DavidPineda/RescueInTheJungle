@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    tools:ignore="Deprecated,DuplicateIds" >
+
+    <AbsoluteLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/absoluteLayoutderecha"
+        android:layout_width="70dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true" >
+
+        <ImageButton
+            android:id="@+id/boton_informacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="2dp"
+            android:layout_y="56dp"
+            android:background="@null"
+            android:contentDescription="@string/Atras"
+            android:src="@drawable/informacion" />
+
+        <ImageButton
+            android:id="@+id/boton_controles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="3dp"
+            android:layout_y="-6dp"
+            android:background="@null"
+            android:contentDescription="@string/Atras"
+            android:src="@drawable/controles" />
+
+        <ImageButton
+            android:id="@+id/boton_estadisticas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="22dp"
+            android:layout_marginTop="34dp"
+            android:layout_x="3dp"
+            android:layout_y="107dp"
+            android:background="@null"
+            android:contentDescription="@string/Atras"
+            android:src="@drawable/estadisticas" />
+
+        <ImageButton
+            android:id="@+id/boton_conf_sonido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="-1dp"
+            android:layout_y="161dp"
+            android:background="@null"
+            android:contentDescription="@string/Atras"
+            android:src="@drawable/sonido_confi" />
+
+        <ImageButton
+            android:id="@+id/Boton_Atras"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="0dp"
+            android:layout_y="217dp"
+            android:background="@null"
+            android:contentDescription="@string/Atras"
+            android:src="@drawable/atras" />
+    </AbsoluteLayout>
+
+    <ScrollView
+        android:id="@+id/Scroll_estadisticas"
+        android:layout_width="350dp"
+        android:layout_height="190dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="45dp"
+        android:layout_toLeftOf="@+id/absoluteLayoutderecha"
+        android:background="@drawable/apacheairiniciojuego" >
+
+        <TextView
+            android:id="@+id/Estadisticas_Informacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:gravity="center"
+            android:shadowColor="#DF0101"
+            android:shadowDx="3"
+            android:shadowDy="7"
+            android:shadowRadius="3.0"
+            android:textColor="#FFF"
+            android:textScaleX="3"
+            android:textSize="14dp"
+            android:textStyle="italic" />
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/titulo_opciones"
+        android:layout_width="140dp"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/Scroll_estadisticas"
+        android:layout_marginRight="98dp"
+        android:shadowColor="#FF4500"
+        android:shadowDx="3"
+        android:shadowDy="7"
+        android:shadowRadius="3.0"
+        android:text="@string/titulo_opciones"
+        android:textColor="#FFF"
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

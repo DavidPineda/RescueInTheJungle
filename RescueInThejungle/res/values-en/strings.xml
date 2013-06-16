@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="Titulo_aplicacion">Rescue In The Jungle</string>
+    <string name="Nuevo_juego">Nuevo Ju</string>
+    <string name="Continuar">Continuar Par</string>
+    <string name="Multi_Jugador">Multijug</string>
+    <string name="Opciones">Opcio</string>
+    <string name="menu_settings">ajus</string>
+
+</resources>

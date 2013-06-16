@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="22dp"
+        android:gravity="center_horizontal"
+        android:text="@string/Configuacion_sonido"
+        android:textColor="#FFF"
+        android:textSize="12pt" />
+
+    <SeekBar
+        android:id="@+id/VolumenBar1"
+        android:layout_width="290dp"
+        android:layout_height="32dp"
+        android:layout_below="@+id/textView4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:max="100"
+        android:progress="100" />
+
+    <SeekBar
+        android:id="@+id/EquilibrarBar"
+        android:layout_width="290dp"
+        android:layout_height="32dp"
+        android:layout_alignLeft="@+id/VolumenBar1"
+        android:layout_below="@+id/VolumenBar1"
+        android:layout_marginTop="55dp"
+        android:max="200"
+        android:progress="100" />
+
+    <SeekBar
+        android:id="@+id/AcelerarBar"
+        android:layout_width="290dp"
+        android:layout_height="32dp"
+        android:layout_alignLeft="@+id/EquilibrarBar"
+        android:layout_below="@+id/EquilibrarBar"
+        android:layout_marginTop="58dp"
+        android:max="200"
+        android:progress="100" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/AcelerarBar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/Acelerar"
+        android:textColor="#FFF"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/textview_volumen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_below="@+id/VolumenBar1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="@string/Volumen"
+        android:textColor="#FFF"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/textview_equilibrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_below="@+id/EquilibrarBar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:text="@string/Equilibrar"
+        android:textColor="#FFF"
+        android:textSize="18dp" />
+
+    <ImageButton
+        android:id="@+id/Boton_Atras_conf_sonido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/AcelerarBar"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="40dp"
+        android:background="@null"
+        android:contentDescription="@string/Atras"
+        android:src="@drawable/atras" />
+
+    <ImageButton
+        android:id="@+id/sonido_conf_helicoptero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/Boton_Atras_conf_sonido"
+        android:layout_toLeftOf="@+id/textView3"
+        android:background="@null"
+        android:contentDescription="@string/Atras"
+        android:src="@drawable/ice_launcher" />
+
+    <ImageButton
+        android:id="@+id/sonido_conf_disparo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/sonido_conf_helicoptero"
+        android:layout_toRightOf="@+id/textView3"
+        android:background="@null"
+        android:contentDescription="@string/Atras"
+        android:src="@drawable/ametralladora" />
+
+    <ImageButton
+        android:id="@+id/sonido_conf_explosion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/AcelerarBar"
+        android:layout_alignTop="@+id/sonido_conf_disparo"
+        android:background="@null"
+        android:contentDescription="@string/Atras"
+        android:src="@drawable/explosion" />
+
+</RelativeLayout>
