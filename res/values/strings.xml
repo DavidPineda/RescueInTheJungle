@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="Titulo_aplicacion">Rescue In The Jungle</string>
+    <string name="Nuevo_juego">Nuevo Juego</string>
+    <string name="Continuar">Continuar Partida</string>
+    <string name="Multi_Jugador">Multijugador</string>
+    <string name="Opciones">Opciones</string>
+    <string name="menu_settings">ajustes</string>
+    <string name="Control_Volumen">Sonido</string>
+    <string name="Imegen_Inicial">Rescue In The Jungle</string>
+    <string name="Salir">Salir</string>
+    <string name="Nuevo_Jugador">Nuevo Jugador</string>
+    <string name="Atras">Atras</string>
+    <string name="Lista_Vacia">No hay jugadores registrados</string>
+    <string name="multijugador_construccion">Pagina en</string>
+    <string name="multijugador_construccion_1">Construccion</string>
+    <string name="boton_estadisticas">Estadisticas</string>
+    <string name="titulo_opciones">Opciones</string>
+    <string name="Boton_sonido">Sonido</string>
+    <string name="Boton_informacion">Informacion</string>
+    <string name="Boton_controles">Controles</string>
+    <string name="Acelerar">Acelerar</string>
+    <string name="Equilibrar">Equilibrar</string>
+    <string name="Volumen">Volumen</string>
+    <string name="Configuacion_sonido">Configuracion Sonido</string>
+    <string name="Nombre_empresa">P Y P TECHNOLOGIES</string>
+</resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    tools:ignore="Deprecated" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_x="136dp"
+        android:layout_y="14dp"
+        android:shadowColor="#2E2EFE"
+        android:gravity="center_horizontal"
+        android:shadowDx="3"
+        android:shadowDy="7"
+        android:shadowRadius="3.0"
+        android:text="@string/multijugador_construccion"
+        android:textColor="#FFF"
+        android:textSize="56dp" />
+
+    <ImageButton
+        android:id="@+id/Boton_Atras"
+        android:layout_width="45dp"
+        android:layout_height="52dp"
+        android:layout_x="239dp"
+        android:layout_y="186dp"
+        android:background="@null"
+        android:contentDescription="@string/Atras"
+        android:gravity="center_horizontal"
+        android:src="@drawable/atras" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="123dp"
+        android:layout_y="85dp"
+        android:shadowColor="#2E2EFE"
+        android:gravity="center_horizontal"
+        android:shadowDx="3"
+        android:shadowDy="7"
+        android:shadowRadius="3.0"
+        android:text="@string/multijugador_construccion_1"
+        android:textColor="#FFF"
+        android:textSize="45dp" />
+
+</AbsoluteLayout>

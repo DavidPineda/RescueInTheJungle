@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    android:orientation="vertical"
+    tools:ignore="Deprecated" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dip"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="180dp"
+        android:text="@string/Nuevo_Jugador"
+        android:textColor="#F00"
+        android:textSize="25sp" />
+
+    <EditText
+        android:id="@+id/Usuario_Nuevo"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="165dp"
+        android:ems="10"
+        android:inputType="text" >
+
+        <requestFocus />
+    </EditText>
+
+    <AbsoluteLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="30dp" >
+
+        <ImageButton
+            android:id="@+id/Boton_Crear_Usuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="316dp"
+            android:layout_y="36dp"
+            android:background="@null"
+            android:contentDescription="@string/Continuar"
+            android:src="@drawable/ok" />
+
+        <ImageButton
+            android:id="@+id/Boton_Atras"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="167dp"
+            android:layout_y="41dp"
+            android:background="@null"
+            android:contentDescription="@string/Atras"
+            android:src="@drawable/atras" />
+
+    </AbsoluteLayout>
+
+</LinearLayout>

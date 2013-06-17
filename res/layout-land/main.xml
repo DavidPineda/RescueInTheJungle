@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/apacheairiniciojuego"
+    android:orientation="vertical"
+    tools:ignore="InefficientWeight,UselessParent,ContentDescription" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="12" >
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" >
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="200dp"
+                android:layout_height="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center" />
+            
+           
+            
+        </RelativeLayout>
+
+    </RelativeLayout>
+ <TextView
+        android:id="@+id/Empresa"
+        android:layout_width="165dp"
+        android:layout_height="30dp"
+        android:gravity="center_horizontal"
+        android:text="@string/Nombre_empresa"
+        android:textColor="#FFFFFF"
+        android:textSize="14dp"
+        android:textStyle="bold" />
+</LinearLayout>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000" >
+
+    <TextView
+        android:id="@+id/titulo_opciones"
+        android:layout_width="140dp"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="19dp"
+        android:shadowColor="#FF4500"
+        android:shadowDx="3"
+        android:shadowDy="7"
+        android:shadowRadius="3.0"
+        android:text="@string/titulo_opciones"
+        android:textColor="#FFF"
+        android:textSize="30dp"
+        android:textStyle="bold" 
+       />
+
+    <ImageButton
+        android:id="@+id/Boton_Atras"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="28dp"
+        android:layout_marginLeft="16dp"
+        android:background="@null"
+        android:contentDescription="@string/Atras"
+        android:src="@drawable/atras" />
+
+    <ScrollView
+        android:id="@+id/Scroll_estadisticas"
+        android:layout_width="255dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/apacheairiniciojuego" >
+
+        <TextView
+            android:id="@+id/Estadisticas_Informacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:gravity="center"
+            android:shadowColor="#DF0101"
+            android:shadowDx="3"
+            android:shadowDy="7"
+            android:shadowRadius="3.0"
+            android:textColor="#FFF"
+            android:textScaleX="3"
+            android:textSize="14dp"
+            android:textStyle="italic" />
+    </ScrollView>
+
+    <ImageButton
+        android:id="@+id/boton_estadisticas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/Boton_Atras"
+        android:layout_marginLeft="18dp"
+        android:layout_toRightOf="@+id/Boton_Atras"
+        android:background="@null"
+        android:contentDescription="@string/Atras"
+        android:src="@drawable/estadisticas" />
+
+    <ImageButton
+        android:id="@+id/boton_conf_sonido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/boton_estadisticas"
+        android:layout_centerHorizontal="true"
+        android:background="@null"
+        android:contentDescription="@string/Atras"
+        android:src="@drawable/sonido_confi" />
+
+    <ImageButton
+        android:id="@+id/boton_informacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/boton_conf_sonido"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/boton_conf_sonido"
+        android:background="@null"
+        android:contentDescription="@string/Atras"
+        android:src="@drawable/informacion" />
+
+    <ImageButton
+        android:id="@+id/boton_controles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/boton_informacion"
+        android:layout_marginRight="16dp"
+        android:background="@null"
+        android:contentDescription="@string/Atras"
+        android:src="@drawable/controles" />
+
+</RelativeLayout>

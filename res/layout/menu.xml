@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Menu"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/fondo_menu"
+    android:focusable="true"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/Boton_Juego_Nuevo"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="110dp"
+        android:background="@null"
+        android:text="@string/Nuevo_juego"
+        android:textColor="#DF0101"
+        android:textSize="11pt" />
+
+    <Button
+        android:id="@+id/Boton_Continuar"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:text="@string/Continuar"
+        android:textColor="#DF0101"
+        android:textSize="10pt" />
+
+    <Button
+        android:id="@+id/Boton_Multijugador"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:text="@string/Multi_Jugador"
+        android:textColor="#DF0101"
+        android:textSize="11pt" />
+
+    <Button
+        android:id="@+id/Boton_Opciones"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:text="@string/Opciones"
+        android:textColor="#DF0101"
+        android:textSize="11pt" />
+
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="80dp" >
+
+        <TableRow>
+
+            <FrameLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <ImageButton
+                    android:id="@+id/Boton_Control_Volumen_Apagado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:contentDescription="@string/Control_Volumen"
+                    android:src="@drawable/c_volumen_apagado" 
+                    android:visibility="invisible"/>
+                
+                <ImageButton
+                    android:id="@+id/Boton_Control_Volumen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:contentDescription="@string/Control_Volumen"
+                    android:src="@drawable/c_volumen" 
+                    android:visibility="invisible"/>
+                
+            </FrameLayout>
+
+            <ImageButton
+                android:id="@+id/Boton_Salir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:contentDescription="@string/Salir"
+                android:src="@drawable/salir" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

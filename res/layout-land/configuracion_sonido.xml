@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:gravity="center_horizontal"
+        android:text="@string/Configuacion_sonido"
+        android:textColor="#FFF"
+        android:textSize="12pt" />
+
+    <SeekBar
+        android:id="@+id/VolumenBar1"
+        android:layout_width="290dp"
+        android:layout_height="32dp"
+        android:layout_below="@+id/textView4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:max="100"
+        android:progress="100" />
+
+    <SeekBar
+        android:id="@+id/EquilibrarBar"
+        android:layout_width="290dp"
+        android:layout_height="32dp"
+        android:layout_alignLeft="@+id/VolumenBar1"
+        android:layout_below="@+id/VolumenBar1"
+        android:layout_marginTop="20dp"
+        android:max="200"
+        android:progress="100" />
+
+    <SeekBar
+        android:id="@+id/AcelerarBar"
+        android:layout_width="290dp"
+        android:layout_height="32dp"
+        android:layout_alignLeft="@+id/EquilibrarBar"
+        android:layout_below="@+id/EquilibrarBar"
+        android:layout_marginTop="30dp"
+        android:max="200"
+        android:progress="100" />
+
+    <ImageButton
+        android:id="@+id/sonido_conf_explosion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/AcelerarBar"
+        android:background="@null"
+        android:contentDescription="@string/Atras"
+        android:src="@drawable/explosion" />
+
+    <ImageButton
+        android:id="@+id/sonido_conf_disparo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="30dp"
+        android:layout_toLeftOf="@+id/sonido_conf_explosion"
+        android:background="@null"
+        android:contentDescription="@string/Atras"
+        android:src="@drawable/ametralladora" />
+
+    <ImageButton
+        android:id="@+id/Boton_Atras_conf_sonido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/AcelerarBar"
+        android:layout_alignParentBottom="true"
+        android:background="@null"
+        android:contentDescription="@string/Atras"
+        android:src="@drawable/atras" />
+
+    <ImageButton
+        android:id="@+id/sonido_conf_helicoptero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="33dp"
+        android:layout_toRightOf="@+id/Boton_Atras_conf_sonido"
+        android:background="@null"
+        android:contentDescription="@string/Atras"
+        android:src="@drawable/ice_launcher" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_alignTop="@+id/AcelerarBar"
+        android:layout_centerHorizontal="true"
+        android:text="@string/Acelerar"
+        android:textColor="#FFF"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/textview_equilibrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/EquilibrarBar"
+        android:layout_centerHorizontal="true"
+        android:text="@string/Equilibrar"
+        android:textColor="#FFF"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/textview_volumen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/textView3"
+        android:layout_alignTop="@+id/VolumenBar1"
+        android:text="@string/Volumen"
+        android:textColor="#FFF"
+        android:textSize="18dp" />
+
+</RelativeLayout>
