@@ -149,7 +149,7 @@ public abstract class Grafico {
 	 * @param y2 Posición en y del objeto contra el cula se toma la distancia
 	 * @return Distanacia entre dos objetos del mapa
 	 */
-	public double distanciaE(double x, double x2, double y, double y2){
+	public double distanciaE(double x, double y, double x2, double y2){
 		return Math.sqrt((x-x2)*(x-x2) + (y-y2)*(y-y2));
 	}
 	

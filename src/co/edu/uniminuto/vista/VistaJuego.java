@@ -72,8 +72,6 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 	private Paint p;
 	private Escenario escenario;
 
-	private long ultimoDisparo;
-
 	public VistaJuego(Context context, String nombre_jugador) {
 		super(context);
 		getHolder().addCallback(this);
@@ -462,13 +460,12 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 				}
 			}
 			h.move(posX, posY);
-			int porcentajeLimite = (anchoPant * 10) / 100;
+			int porcentajeLimite = (anchoPant * 30) / 100;
 			if (h.getPosX() > getWidth() - porcentajeLimite) {
 				escenario.mover(20, true);
 			} else if (h.getPosX() < porcentajeLimite) {
 				escenario.mover(20, false);
 			}
-			// cantidadLiberados = h.getLiberados().size();
 		}
 	}
 
@@ -746,7 +743,7 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 		int y2 = enemigo.getPosY();
 		int hipotenusa = (int) enemigo.distancia(h);
 		int co = y2 - y1;
-		int anguloDisparo = (int) (Math.toDegrees(Math.asin((double) (co)
+		double anguloDisparo =  (Math.toDegrees(Math.asin((double) (co)
 				/ (double) (hipotenusa))));
 		int direccion = (int) Math.toDegrees(Math.tan((double) (y2 - y1)
 				/ (double) (x2 - x1)));
@@ -761,7 +758,7 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 				tCrometro.setSegun(00);
 				tCrometro.setCente(00);
 				Arma armasEnemigo = enemigo.getArmas().get(0);
-				armasEnemigo.setAngulo(anguloDisparo);
+				armasEnemigo.setAngulo((int)anguloDisparo + 180);				
 				armasEnemigo.setPosX(enemigo.getPosX());
 				armasEnemigo.setPosY(enemigo.getPosY());
 				disparosEnemigo.add(armasEnemigo);
