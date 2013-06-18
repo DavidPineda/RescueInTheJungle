@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -25,6 +26,7 @@ import co.edu.uniminuto.mundo.Arma.Tipo;
 import co.edu.uniminuto.mundo.BaseAnalogo;
 import co.edu.uniminuto.mundo.BotonAnalogo;
 import co.edu.uniminuto.mundo.Enemigo;
+import co.edu.uniminuto.mundo.Enemigo.alcanceDeAtaque;
 import co.edu.uniminuto.mundo.Helicoptero;
 import co.edu.uniminuto.mundo.Jugador;
 import co.edu.uniminuto.mundo.ObjetosPuntuacion;
@@ -40,12 +42,13 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 	private VistaJuegoThread paintThread;
 	private ArrayList<Arma> armasEnPantalla;
 	private ArrayList<Enemigo> enemigosEnPantalla;
+	private ArrayList<Arma> disparosEnemigo;
 
 	private Grafico armaActiva, prisionero;
 	private Grafico elementoActivo = null;
 	private Grafico btnAnalogo, ctrAnalogo, rescueHelicoptero, btnDisparador;
 	private Grafico armaIzquierda, armaDerecha, recuadro, recuadroPrisionero;
-	private Grafico p_reloj, vidaHelicoptero;
+	private Grafico p_reloj, vidaHelicoptero, enemigo;
 	private ThreadCrometro tCrometro;
 	private Jugador jugador;
 
@@ -68,6 +71,8 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 	private Rect rec;
 	private Paint p;
 	private Escenario escenario;
+
+	private long ultimoDisparo;
 
 	public VistaJuego(Context context, String nombre_jugador) {
 		super(context);
@@ -98,7 +103,6 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 
 		tCrometro = new ThreadCrometro();
 		escenario.cargarEscenario(nivel);
-		vidaHelicoptero();
 		Drawable analogo, control, helicoptero, reloj;
 		reloj = context.getResources().getDrawable(R.drawable.reloj);
 		analogo = context.getResources().getDrawable(
@@ -121,11 +125,12 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 				+ btnDisparador.getAncho() / 2);
 		btnDisparador.setPosY(altoPant
 				- (btnAnalogo.getAlto() + (btnAnalogo.getAlto() / 2)));
-		rescueHelicoptero = new Helicoptero(helicoptero, this);
+		rescueHelicoptero = new Helicoptero(helicoptero, this, 10, 10, 100);
 		rescueHelicoptero.setPosX(anchoPant / 3);
 		rescueHelicoptero.setPosY(altoPant / 3);
 		rescueHelicoptero.setAngulo(0);
 		rescueHelicoptero.setRotacion(3);
+		vidaHelicoptero();
 
 		p_reloj = new ObjetosPuntuacion(reloj, this);
 		p_reloj.setPosX(((anchoPant / 110) * 2));
@@ -138,6 +143,9 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 		armasEnPantalla = new ArrayList<Arma>();
 		armarHelicoptero();
 		armarRecuadro();
+		enemigosEnPantalla = new ArrayList<Enemigo>();
+		disparosEnemigo = new ArrayList<Arma>();
+		cargarEnemigos();
 		paintThread = new VistaJuegoThread(getHolder(), this);
 		paintThread.setRunning(true);
 		paintThread.start();
@@ -156,14 +164,14 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	public void agregarEnemigos(Enemigo enemigo){
+	public void agregarEnemigos(Enemigo enemigo) {
 		this.enemigosEnPantalla.add(enemigo);
 	}
-	
-	public void eliminarEnemigo(Enemigo enemigo){
+
+	public void eliminarEnemigo(Enemigo enemigo) {
 		this.enemigosEnPantalla.remove(enemigo);
 	}
-	
+
 	@SuppressLint("DrawAllocation")
 	@Override
 	public void onDraw(Canvas canvas) {
@@ -177,7 +185,7 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 		if (!gameover) {
 			Helicoptero h = (Helicoptero) rescueHelicoptero;
 			if (tCrometro.getMinutos() != jugador.getTimeNivel()
-					// && jugador.getVidaHelicoptero() >= 0) {
+			// && jugador.getVidaHelicoptero() >= 0) {
 					&& h.getCantidadVida() >= 0) {
 				escenario.draw(canvas, p, screenWidth, screenHeight,
 						jugador.getNivel());
@@ -209,6 +217,14 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 						armaDisparada.dibujarGrafico(canvas);
 					}
 				}
+				for (int i = 0; i < enemigosEnPantalla.size(); i++) {
+					enemigo = enemigosEnPantalla.get(i);
+					enemigo.dibujarGrafico(canvas);
+				}
+				for (int i = 0; i < disparosEnemigo.size(); i++) {
+					armaDisparada = disparosEnemigo.get(i);
+					armaDisparada.dibujarGrafico(canvas);
+				}
 			} else {
 				gameover = true;
 				tCrometro.setEstado(true);
@@ -224,7 +240,7 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 				escenario.draw(canvas, p, screenWidth, screenHeight, 50);
 			} else {
 				escenario.cargarEscenario(jugador.getNivel());
-				//jugador.restablecerVidaHelicoptero(200);
+				// jugador.restablecerVidaHelicoptero(200);
 				Helicoptero h = (Helicoptero) rescueHelicoptero;
 				h.setCantidadVida(100);
 				vidaHelicoptero();
@@ -452,7 +468,7 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 			} else if (h.getPosX() < porcentajeLimite) {
 				escenario.mover(20, false);
 			}
-			//cantidadLiberados = h.getLiberados().size();
+			// cantidadLiberados = h.getLiberados().size();
 		}
 	}
 
@@ -480,7 +496,7 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 	public void manejoDisparo() {
 		for (int i = 0; i < armasEnPantalla.size(); i++) {
 			armaDisparada = armasEnPantalla.get(i);
-			switch (armasEnPantalla.get(i).getTipo()) {
+			switch (armaDisparada.getTipo()) {
 			case bomba:
 				armaDisparada.move(0, 12);
 				break;
@@ -492,7 +508,20 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 				break;
 			}
 		}
-
+		for (int i = 0; i < disparosEnemigo.size(); i++) {
+			armaDisparada = disparosEnemigo.get(i);
+			switch (armaDisparada.getTipo()) {
+			case bomba:
+				armaDisparada.move(0, 12);
+				break;
+			case metralla:
+				armaDisparada.move(30, 30);
+				break;
+			case misil:
+				armaDisparada.move(1, 1);
+				break;
+			}
+		}
 	}
 
 	public void armarHelicoptero() {
@@ -520,88 +549,9 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 		h.setArmas(armas);
 	}
 
-	/*
-	public void vidaHelicoptero() {
-		Drawable vidaHelico;
-		if (jugador.getVidaHelicoptero() >= 190
-				&& jugador.getVidaHelicoptero() <= 200) {
-			vidaHelico = context.getResources().getDrawable(R.drawable.diez);
-			vidaHelicoptero = new ObjetosPuntuacion(vidaHelico, this);
-			vidaHelicoptero.setPosX((anchoPant / 100) * 8);
-			vidaHelicoptero.setPosY((altoPant / 74) * 2);
-		} else if (jugador.getVidaHelicoptero() >= 180
-				&& jugador.getVidaHelicoptero() < 190) {
-			vidaHelico = context.getResources().getDrawable(R.drawable.nueve);
-			vidaHelicoptero = new ObjetosPuntuacion(vidaHelico, this);
-			vidaHelicoptero.setPosX((anchoPant / 100) * 8);
-			vidaHelicoptero.setPosY((altoPant / 74) * 2);
-		} else if (jugador.getVidaHelicoptero() >= 160
-				&& jugador.getVidaHelicoptero() < 180) {
-			vidaHelico = context.getResources().getDrawable(R.drawable.ocho);
-			vidaHelicoptero = new ObjetosPuntuacion(vidaHelico, this);
-			vidaHelicoptero.setPosX((anchoPant / 100) * 8);
-			vidaHelicoptero.setPosY((altoPant / 74) * 2);
-		} else if (jugador.getVidaHelicoptero() >= 140
-				&& jugador.getVidaHelicoptero() < 160) {
-			vidaHelico = context.getResources().getDrawable(R.drawable.siete);
-			vidaHelicoptero = new ObjetosPuntuacion(vidaHelico, this);
-			vidaHelicoptero.setPosX((anchoPant / 100) * 8);
-			vidaHelicoptero.setPosY((altoPant / 74) * 2);
-		} else if (jugador.getVidaHelicoptero() >= 120
-				&& jugador.getVidaHelicoptero() < 140) {
-			vidaHelico = context.getResources().getDrawable(R.drawable.seis);
-			vidaHelicoptero = new ObjetosPuntuacion(vidaHelico, this);
-			vidaHelicoptero.setPosX((anchoPant / 100) * 8);
-			vidaHelicoptero.setPosY((altoPant / 74) * 2);
-		} else if (jugador.getVidaHelicoptero() >= 100
-				&& jugador.getVidaHelicoptero() < 120) {
-			vidaHelico = context.getResources().getDrawable(R.drawable.cinco);
-			vidaHelicoptero = new ObjetosPuntuacion(vidaHelico, this);
-			vidaHelicoptero.setPosX((anchoPant / 100) * 8);
-			vidaHelicoptero.setPosY((altoPant / 74) * 2);
-		} else if (jugador.getVidaHelicoptero() >= 80
-				&& jugador.getVidaHelicoptero() < 100) {
-			vidaHelico = context.getResources().getDrawable(
-					R.drawable.cuatro_cinco);
-			vidaHelicoptero = new ObjetosPuntuacion(vidaHelico, this);
-			vidaHelicoptero.setPosX((anchoPant / 100) * 8);
-			vidaHelicoptero.setPosY((altoPant / 74) * 2);
-		} else if (jugador.getVidaHelicoptero() >= 70
-				&& jugador.getVidaHelicoptero() < 80) {
-			vidaHelico = context.getResources().getDrawable(R.drawable.cuatro);
-			vidaHelicoptero = new ObjetosPuntuacion(vidaHelico, this);
-			vidaHelicoptero.setPosX((anchoPant / 100) * 8);
-			vidaHelicoptero.setPosY((altoPant / 74) * 2);
-		} else if (jugador.getVidaHelicoptero() >= 50
-				&& jugador.getVidaHelicoptero() < 70) {
-			vidaHelico = context.getResources().getDrawable(R.drawable.tres);
-			vidaHelicoptero = new ObjetosPuntuacion(vidaHelico, this);
-			vidaHelicoptero.setPosX((anchoPant / 100) * 8);
-			vidaHelicoptero.setPosY((altoPant / 74) * 2);
-		} else if (jugador.getVidaHelicoptero() >= 30
-				&& jugador.getVidaHelicoptero() < 50) {
-			vidaHelico = context.getResources().getDrawable(R.drawable.dos);
-			vidaHelicoptero = new ObjetosPuntuacion(vidaHelico, this);
-			vidaHelicoptero.setPosX((anchoPant / 100) * 8);
-			vidaHelicoptero.setPosY((altoPant / 74) * 2);
-		} else if (jugador.getVidaHelicoptero() >= 10
-				&& jugador.getVidaHelicoptero() < 30) {
-			vidaHelico = context.getResources().getDrawable(R.drawable.uno);
-			vidaHelicoptero = new ObjetosPuntuacion(vidaHelico, this);
-			vidaHelicoptero.setPosX((anchoPant / 100) * 8);
-			vidaHelicoptero.setPosY((altoPant / 74) * 2);
-		} else if (jugador.getVidaHelicoptero() >= 1
-				&& jugador.getVidaHelicoptero() < 10) {
-			vidaHelico = context.getResources().getDrawable(R.drawable.cero);
-			vidaHelicoptero = new ObjetosPuntuacion(vidaHelico, this);
-			vidaHelicoptero.setPosX((anchoPant / 100) * 8);
-			vidaHelicoptero.setPosY((altoPant / 74) * 2);
-		}
-	}*/
-	
 	/**
-	 * Cambia la cantidad de vida del helicoptero mostrada en la barra
-	 * segun la cantidad que posea el helicoptero 
+	 * Cambia la cantidad de vida del helicoptero mostrada en la barra segun la
+	 * cantidad que posea el helicoptero
 	 */
 	public void vidaHelicoptero() {
 		Drawable vidaHelico = null;
@@ -645,7 +595,7 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 		vidaHelicoptero.setPosX((anchoPant / 100) * 8);
 		vidaHelicoptero.setPosY((altoPant / 74) * 2);
 	}
-	
+
 	public void cargarNivel(String nomJugador) {
 		DbSqliteRescueJungle dbJungle = new DbSqliteRescueJungle(getContext());
 		SQLiteDatabase db = dbJungle.getWritableDatabase();
@@ -695,7 +645,8 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	//Revisar este  metodo por que carga todo al jugador sin se neceario completamente
+	// Revisar este metodo por que carga todo al jugador sin se neceario
+	// completamente
 	public Jugador cargarAvancesJugador(String nomJugador) {
 		DbSqliteRescueJungle dbJungle = new DbSqliteRescueJungle(getContext());
 		SQLiteDatabase db = dbJungle.getWritableDatabase();
@@ -734,59 +685,108 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Verifica si un objeto enemigo esta en posicion de ataque
 	 */
-	public void verificaAtaque(){
+	public void verificaAtaque() {
 		Helicoptero h = (Helicoptero) rescueHelicoptero;
 		for (Enemigo enemigo : enemigosEnPantalla) {
-			if (enemigo.alcanceAtaque(h, RadioDistanciaAtaque(enemigo))){
+			if (enemigo.alcanceAtaque(h, RadioDistanciaAtaque(enemigo))) {
 				disparoEnemigo(enemigo);
 			}
 		}
 	}
-	
+
 	/**
 	 * Retorna el perimetro de disparo posible de un objeto
-	 * @param enemigo El objeto del cual se quiere obtener su perimetro de disparo
+	 * 
+	 * @param enemigo
+	 *            El objeto del cual se quiere obtener su perimetro de disparo
 	 * @return Perimetro de disparo del objeto
 	 */
-	public Rect RadioDistanciaAtaque(Enemigo enemigo){
+	public Rect RadioDistanciaAtaque(Enemigo enemigo) {
 		Rect radio = null;
 		int x1 = enemigo.getPosX();
 		int x2 = x1 + enemigo.getAncho();
 		switch (enemigo.getAlcanceDeAtaque()) {
 		case bajo:
-			int distanciaBaja = (anchoPant * 10) / 100; // Equivale al 20% de la pantalla
-			radio = new Rect(x - distanciaBaja, 0, x2 + distanciaBaja, altoPant);
+			int distanciaBaja = (anchoPant * 20) / 100; // Equivale al 20% de la
+														// pantalla
+			radio = new Rect(x1 - distanciaBaja, 0, x2 + distanciaBaja,
+					altoPant);
 			break;
 		case medio:
-			int distanciaMedia = (anchoPant * 20) / 100; // Equivale al 40% de la pantalla
-			radio = new Rect(x - distanciaMedia, 0, x2 + distanciaMedia, altoPant);
+			int distanciaMedia = (anchoPant * 40) / 100; // Equivale al 40% de
+															// la pantalla
+			radio = new Rect(x1 - distanciaMedia, 0, x2 + distanciaMedia,
+					altoPant);
 			break;
 		case alto:
-			int distanciaAlta = (anchoPant * 30) / 100; // Equivale al 60% de la pantalla
-			radio = new Rect(x - distanciaAlta, 0, x2 + distanciaAlta, altoPant);
+			int distanciaAlta = (anchoPant * 60) / 100; // Equivale al 60% de la
+														// pantalla
+			radio = new Rect(x1 - distanciaAlta, 0, x2 + distanciaAlta,
+					altoPant);
 			break;
 		}
 		return radio;
 	}
-	
+
 	/**
 	 * Ejecuta el disparo hacia el helicoptero
-	 * @param enemigo Objeto que realiza el ataque
+	 * 
+	 * @param enemigo
+	 *            Objeto que realiza el ataque
 	 */
-	public void disparoEnemigo(Enemigo enemigo){
-		Helicoptero h = (Helicoptero)rescueHelicoptero;
+	public void disparoEnemigo(Enemigo enemigo) {
+		Helicoptero h = (Helicoptero) rescueHelicoptero;
 		int x1 = h.getPosX();
 		int y1 = h.getPosY();
 		int x2 = enemigo.getPosX();
 		int y2 = enemigo.getPosY();
-		int hipotenusa = (int)enemigo.distancia(h);
+		int hipotenusa = (int) enemigo.distancia(h);
 		int co = y2 - y1;
-		int anguloDisparo = (int)(Math.toDegrees(Math.asin((double)(co)/(double)(hipotenusa))));
-		int direccion = (int)Math.toDegrees(Math.tan((double)(y2-y1) / (double)(x2-x1)));
+		int anguloDisparo = (int) (Math.toDegrees(Math.asin((double) (co)
+				/ (double) (hipotenusa))));
+		int direccion = (int) Math.toDegrees(Math.tan((double) (y2 - y1)
+				/ (double) (x2 - x1)));
+
+		if (enemigo.getArmas().size() > 0) {
+			tCrometro.setEstado(true);
+			tCrometro.segundosCambioNivel();	
+			if (tCrometro.getSegun() < 1) {
+				// aca espera no coloque nda mientras avanzan las centesimas
+			} else {
+				tCrometro.setEstado(false);
+				tCrometro.setSegun(00);
+				tCrometro.setCente(00);
+				Arma armasEnemigo = enemigo.getArmas().get(0);
+				armasEnemigo.setAngulo(anguloDisparo);
+				armasEnemigo.setPosX(enemigo.getPosX());
+				armasEnemigo.setPosY(enemigo.getPosY());
+				disparosEnemigo.add(armasEnemigo);
+				enemigo.getArmas().remove(0);
+			}
+
+		}
+
 	}
-	
+
+	public void cargarEnemigos() {
+		Drawable eneDrawable, disparo;
+		eneDrawable = getContext().getResources().getDrawable(
+				R.drawable.gerrillo_1);
+		disparo = getContext().getResources().getDrawable(R.drawable.misil1);
+		Enemigo e = new Enemigo(eneDrawable, this, alcanceDeAtaque.medio, false);
+		for (int i = 0; i < 25; i++) {
+			Arma a = new Arma(disparo, this, Tipo.misil);
+			e.agregarArma(a);
+		}
+		e.setPosX((anchoPant / 2));
+		e.setPosY(altoPant - 100);
+		for (int i = 0; i < 1; i++) {
+			enemigosEnPantalla.add(e);
+		}
+	}
+
 }

@@ -47,12 +47,6 @@ public class Enemigo extends Grafico implements GraficoMovil{
 		this.armas.add(arma);
 	}
 	
-	public Enemigo(Drawable drawable, View view, alcanceDeAtaque ataque, boolean esMovil) {
-		super(drawable, view);
-		setAlcanceDeAtaque(ataque);
-		setEsMovil(esMovil);
-	}
-	
 	public int getNivelVida() {
 		return nivelVida;
 	}
@@ -60,12 +54,20 @@ public class Enemigo extends Grafico implements GraficoMovil{
 	public void setNivelVida(int nivelVida) {
 		this.nivelVida = nivelVida;
 	}
+	
+	public Enemigo(Drawable drawable, View view, alcanceDeAtaque ataque, boolean esMovil) {
+		super(drawable, view);
+		setAlcanceDeAtaque(ataque);
+		setEsMovil(esMovil);
+		this.armas = new ArrayList<Arma>();
+	}
 
 	public Enemigo(Drawable drawable, View view, alcanceDeAtaque ataque, boolean esMovil, ArrayList<Arma> armas) {
 		super(drawable, view);
 		setAlcanceDeAtaque(ataque);
 		setEsMovil(esMovil);
 		setArmas(armas);
+		this.armas = armas;
 	}
 
 	@Override
@@ -77,5 +79,7 @@ public class Enemigo extends Grafico implements GraficoMovil{
 	public void manejoVida(int cantVida, int tipCambio) {
 		// TODO Auto-generated method stub	
 	}
+	
+	
 
 }
