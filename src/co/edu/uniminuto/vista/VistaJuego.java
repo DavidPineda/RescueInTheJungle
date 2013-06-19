@@ -11,10 +11,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import co.edu.uniminuto.clases.Coordenada;
 import co.edu.uniminuto.clases.Grafico;
 import co.edu.uniminuto.clases.ReproductorSonido;
 import co.edu.uniminuto.clases.ThreadCrometro;
@@ -25,6 +25,7 @@ import co.edu.uniminuto.mundo.Arma.CapacidadDano;
 import co.edu.uniminuto.mundo.Arma.Tipo;
 import co.edu.uniminuto.mundo.BaseAnalogo;
 import co.edu.uniminuto.mundo.BotonAnalogo;
+import co.edu.uniminuto.mundo.Casa;
 import co.edu.uniminuto.mundo.Enemigo;
 import co.edu.uniminuto.mundo.Enemigo.alcanceDeAtaque;
 import co.edu.uniminuto.mundo.Helicoptero;
@@ -48,7 +49,7 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 	private Grafico elementoActivo = null;
 	private Grafico btnAnalogo, ctrAnalogo, rescueHelicoptero, btnDisparador;
 	private Grafico armaIzquierda, armaDerecha, recuadro, recuadroPrisionero;
-	private Grafico p_reloj, vidaHelicoptero, enemigo;
+	private Grafico p_reloj, vidaHelicoptero, enemigo, casas;
 	private ThreadCrometro tCrometro;
 	private Jugador jugador;
 
@@ -223,6 +224,37 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 					armaDisparada = disparosEnemigo.get(i);
 					armaDisparada.dibujarGrafico(canvas);
 				}
+				/* se pintan las casas */
+				if (escenario.getPosicionX_1() >= -180 && escenario.getPosicionX_1() > -600) {
+					for (int i = 0; i < 3; i++) {
+						casas = cargarCasas().get(i);
+						casas.setPosX(escenario.getPosicionX_1()
+								+ casas.getPosX());
+						casas.dibujarGrafico(canvas);
+						casas = null;
+					}
+				}
+				if (escenario.getPosicionX_1() <= -240 && escenario.getPosicionX_1() > -1100) {
+					int desplazamiento = escenario.getPosicionX_1() + 370;
+					for (int i = 3; i < 6; i++) {
+						casas = cargarCasas().get(i);
+						casas.setPosX(desplazamiento
+								+ casas.getPosX());
+						casas.dibujarGrafico(canvas);
+						casas = null;
+					}
+				}
+				if (escenario.getPosicionX_1() <= -760 && escenario.getPosicionX_1() > -1605) {
+					int desplazamiento = escenario.getPosicionX_1() + 900;
+					for (int i = 6; i < cargarCasas().size(); i++) {
+						casas = cargarCasas().get(i);
+						casas.setPosX(desplazamiento
+								+ casas.getPosX());
+						casas.dibujarGrafico(canvas);
+						casas = null;
+					}
+				}	
+				/************/
 			} else {
 				gameover = true;
 				tCrometro.setEstado(true);
@@ -460,7 +492,7 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 				}
 			}
 			h.move(posX, posY);
-			int porcentajeLimite = (anchoPant * 30) / 100;
+			int porcentajeLimite = (anchoPant * 50) / 100;
 			if (h.getPosX() > getWidth() - porcentajeLimite) {
 				escenario.mover(20, true);
 			} else if (h.getPosX() < porcentajeLimite) {
@@ -515,7 +547,25 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 				armaDisparada.move(30, 30);
 				break;
 			case misil:
-				armaDisparada.move(1, 1);
+				int x;
+				int y2 = armaDisparada.getPunto1().getY();
+				int x2 = armaDisparada.getPunto1().getX();
+				int y1 = armaDisparada.getPunto2().getY();
+				int x1 = armaDisparada.getPunto2().getX();
+				int pendiente = (y2-y1) / (x2-x1);
+				if(pendiente > 0){
+					x = armaDisparada.getPosX() - armaDisparada.getVelX();					
+				}else if(pendiente < 0){
+					x = armaDisparada.getPosX() + armaDisparada.getVelX();					
+				}else{
+					x = 0;
+				}
+				int y = y1 + ((y2 - y1) / (x2 - x1)) * (x - x1);
+				if(x > 0 && x < anchoPant && y > 0 && y < altoPant){
+					armaDisparada.move(x, y);					
+				}else{
+					disparosEnemigo.remove(armaDisparada);
+				}
 				break;
 			}
 		}
@@ -743,14 +793,16 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 		int y2 = enemigo.getPosY();
 		int hipotenusa = (int) enemigo.distancia(h);
 		int co = y2 - y1;
-		double anguloDisparo =  (Math.toDegrees(Math.asin((double) (co)
+		double anguloDisparo = (Math.toDegrees(Math.asin((double) (co)
 				/ (double) (hipotenusa))));
-		int direccion = (int) Math.toDegrees(Math.tan((double) (y2 - y1)
-				/ (double) (x2 - x1)));
-
+		// int direccion = (int) Math.toDegrees(Math.atan((double) (y2 - y1)
+		// / (double) (x2 - x1)));
+		// int pendiente = (int)((y1 - y2) / (x1 - x2));
+		Coordenada cor1 = new Coordenada(x1, y1);
+		Coordenada cor2 = new Coordenada(x2, y2);
 		if (enemigo.getArmas().size() > 0) {
 			tCrometro.setEstado(true);
-			tCrometro.segundosCambioNivel();	
+			tCrometro.segundosCambioNivel();
 			if (tCrometro.getSegun() < 1) {
 				// aca espera no coloque nda mientras avanzan las centesimas
 			} else {
@@ -758,9 +810,20 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 				tCrometro.setSegun(00);
 				tCrometro.setCente(00);
 				Arma armasEnemigo = enemigo.getArmas().get(0);
-				armasEnemigo.setAngulo((int)anguloDisparo + 180);				
-				armasEnemigo.setPosX(enemigo.getPosX());
+				if (x1 < x2) {
+					// Si el helicoptero esta a la izquierda del enemigo
+					armasEnemigo.setAngulo((int) anguloDisparo + 180);
+				} else if (x1 > x2) {
+					// Si el elicoptero esta a la derecha del enemigo
+					armasEnemigo.setAngulo(360 - (int) anguloDisparo);
+				} else {
+					armasEnemigo.setAngulo((int) anguloDisparo);
+				}
+				armasEnemigo.setPosX(enemigo.getPosX()
+						+ (enemigo.getAncho() / 2));
 				armasEnemigo.setPosY(enemigo.getPosY());
+				armasEnemigo.setPunto1(cor1);
+				armasEnemigo.setPunto2(cor2);
 				disparosEnemigo.add(armasEnemigo);
 				enemigo.getArmas().remove(0);
 			}
@@ -775,7 +838,7 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 				R.drawable.gerrillo_1);
 		disparo = getContext().getResources().getDrawable(R.drawable.misil1);
 		Enemigo e = new Enemigo(eneDrawable, this, alcanceDeAtaque.medio, false);
-		for (int i = 0; i < 25; i++) {
+		for (int i = 0; i < 50; i++) {
 			Arma a = new Arma(disparo, this, Tipo.misil);
 			e.agregarArma(a);
 		}
@@ -784,6 +847,94 @@ public class VistaJuego extends SurfaceView implements SurfaceHolder.Callback {
 		for (int i = 0; i < 1; i++) {
 			enemigosEnPantalla.add(e);
 		}
+	}
+	
+	/**
+	 * carga de los objetos de las casas
+	 * 
+	 * @param casas
+	 *            de los enemigos
+	 * 
+	 */
+
+	public ArrayList<Grafico> cargarCasas() {
+
+		ArrayList<Grafico> casas = new ArrayList<Grafico>();
+
+		Drawable casa, casa_dos, cambuche, casabuena, casadanada, casadanada_uno;
+		Drawable torre_unobuena, torrepequena, torre_danada, torre_peque_destruida;
+		Grafico g_casa, g_casa_dos, g_cambuche, g_casabuena, g_casadanada, g_casadanada_uno;
+		Grafico g_torre_unobuena, g_torrepequena, g_torre_danada, g_torre_peque_destruida;
+
+		casa = getContext().getResources().getDrawable(R.drawable.casa);
+		casa_dos = getContext().getResources().getDrawable(R.drawable.casa_dos);
+		casabuena = getContext().getResources().getDrawable(
+				R.drawable.casabuena);
+		casadanada = getContext().getResources().getDrawable(
+				R.drawable.casadanada);
+		casadanada_uno = getContext().getResources().getDrawable(
+				R.drawable.casadanada_uno);
+		cambuche = getContext().getResources().getDrawable(R.drawable.cambuche);
+		torre_unobuena = getContext().getResources().getDrawable(
+				R.drawable.torre1buena);
+		torrepequena = getContext().getResources().getDrawable(
+				R.drawable.torrepequenas);
+		torre_danada = getContext().getResources().getDrawable(
+				R.drawable.torre1danada);
+		torre_peque_destruida = getContext().getResources().getDrawable(
+				R.drawable.torrepequenasdestruidas);
+
+		g_casa = new Casa(casa, this);
+		g_casa.setPosX((anchoPant / 100) * 45);
+		g_casa.setPosY((altoPant / 100) * 93);
+		casas.add(g_casa);
+
+		g_casa_dos = new Casa(casa_dos, this);
+		g_casa_dos.setPosX((anchoPant / 100) * 34);
+		g_casa_dos.setPosY((altoPant / 100) * 84);
+		casas.add(g_casa_dos);
+
+		g_cambuche = new Casa(cambuche, this);
+		g_cambuche.setPosX((anchoPant / 100) * 50);
+		g_cambuche.setPosY((altoPant / 100) * 87);
+		casas.add(g_cambuche);
+
+		g_casabuena = new Casa(casabuena, this);
+		casas.add(g_casabuena);
+		g_casabuena.setPosX((anchoPant / 100) * 100);
+		g_casabuena.setPosY((altoPant / 100) * 90);
+
+		g_casadanada = new Casa(casadanada, this);
+		casas.add(g_casadanada);
+		g_casadanada.setPosX((anchoPant / 100) * 70);
+		g_casadanada.setPosY((altoPant / 100) * 76);
+
+		g_casadanada_uno = new Casa(casadanada_uno, this);
+		casas.add(g_casadanada_uno);
+		g_casadanada_uno.setPosX((anchoPant / 100) * 90);
+		g_casadanada_uno.setPosY((altoPant / 100) * 86);
+
+		g_torre_unobuena = new Casa(torre_unobuena, this);
+		g_torre_unobuena.setPosX((anchoPant / 100) * 84);
+		g_torre_unobuena.setPosY((altoPant / 100) * 93);
+		casas.add(g_torre_unobuena);
+
+		g_torrepequena = new Casa(torrepequena, this);
+		g_torrepequena.setPosX((anchoPant / 100) * 93);
+		g_torrepequena.setPosY((altoPant / 100) * 85);
+		casas.add(g_torrepequena);
+
+		g_torre_danada = new Casa(torre_danada, this);
+		g_torre_danada.setPosX((anchoPant / 100) * 76);
+		g_torre_danada.setPosY((altoPant / 100) * 74);
+		casas.add(g_torre_danada);
+
+		g_torre_peque_destruida = new Casa(torre_peque_destruida, this);
+		g_torre_peque_destruida.setPosX((anchoPant / 100) * 80);
+		g_torre_peque_destruida.setPosY((altoPant / 100) * 74);
+		casas.add(g_torre_peque_destruida);
+
+		return casas;
 	}
 
 }

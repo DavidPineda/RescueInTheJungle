@@ -2,6 +2,7 @@ package co.edu.uniminuto.mundo;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import co.edu.uniminuto.clases.Coordenada;
 import co.edu.uniminuto.clases.Grafico;
 import co.edu.uniminuto.clases.GraficoMovil;
 
@@ -22,6 +23,24 @@ public class Arma extends Grafico implements GraficoMovil {
 	private Tipo tipo;
 	private CapacidadDano capacidadDano;
 	private Alcance alcance;
+	private Coordenada punto1;
+	private Coordenada punto2;
+
+	public Coordenada getPunto1() {
+		return punto1;
+	}
+
+	public void setPunto1(Coordenada punto1) {
+		this.punto1 = punto1;
+	}
+
+	public Coordenada getPunto2() {
+		return punto2;
+	}
+
+	public void setPunto2(Coordenada punto2) {
+		this.punto2 = punto2;
+	}
 
 	public Tipo getTipo() {
 		return tipo;
@@ -68,8 +87,8 @@ public class Arma extends Grafico implements GraficoMovil {
 
 	@Override
 	public void move(int x, int y) {
-		setPosX(getPosX() + x);
-		setPosY(getPosY() + y);
+		setPosX(x);
+		setPosY(y);
 	}
 
 	@Override

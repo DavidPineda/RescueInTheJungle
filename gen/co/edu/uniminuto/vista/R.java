@@ -80,11 +80,15 @@ public final class R {
         public static final int siete=0x7f020042;
         public static final int sonido_confi=0x7f020043;
         public static final int tanque1=0x7f020044;
-        public static final int torremadera1=0x7f020045;
-        public static final int tres=0x7f020046;
-        public static final int uno=0x7f020047;
-        public static final int usuario=0x7f020048;
-        public static final int vidashelicoptero=0x7f020049;
+        public static final int torre1buena=0x7f020045;
+        public static final int torre1danada=0x7f020046;
+        public static final int torremadera1=0x7f020047;
+        public static final int torrepequenas=0x7f020048;
+        public static final int torrepequenasdestruidas=0x7f020049;
+        public static final int tres=0x7f02004a;
+        public static final int uno=0x7f02004b;
+        public static final int usuario=0x7f02004c;
+        public static final int vidashelicoptero=0x7f02004d;
     }
     public static final class id {
         public static final int AcelerarBar=0x7f080003;
